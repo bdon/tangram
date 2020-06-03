@@ -75,7 +75,7 @@ export class SceneBundle {
 
 }
 
-export function createSceneBundle(url, path, parent, type = null) {
+export function createSceneBundle(url, path, parent) {
     return new SceneBundle(url, path, parent);
 }
 
