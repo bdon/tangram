@@ -1003,10 +1003,10 @@ export default class Scene {
 
     // Add source to a scene, arguments `name` and `config` need to be provided:
     //  - If the name doesn't match a sources it will create it
-    //  - the `config` obj follow the YAML scene spec, ex: ```{type: 'TopoJSON', url: "//tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson"]}```
+    //  - the `config` obj follow the YAML scene spec, ex: ```{type: 'GeoJSON', url: "//tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.geojson"]}```
     //    that looks like:
     //
-    //      scene.setDataSource("osm", {type: 'TopoJSON', url: "//tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson" });
+    //      scene.setDataSource("osm", {type: 'GeoJSON', url: "//tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.geojson" });
     //
     //  - also can be pass a ```data``` obj: ```{type: 'GeoJSON', data: JSObj ]}```
     //

@@ -7,7 +7,7 @@ Tangram: WebGL Maps for Vector Data
 <img alt="tangram-header" src="https://cloud.githubusercontent.com/assets/459970/7569087/8cd14df6-f7d4-11e4-8360-db31790d2bbf.png">
 </a>
 
-Tangram is a JavaScript library for rendering 2D & 3D maps live in a web browser with WebGL. It is tuned for OpenStreetMap but supports any source of GeoJSON/TopoJSON or binary vector data, including tilesets and single files.
+Tangram is a JavaScript library for rendering 2D & 3D maps live in a web browser with WebGL. It is tuned for OpenStreetMap but supports any source of GeoJSON or binary vector data, including tilesets and single files.
 
 Here's a [simple demo](https://tangrams.github.io/simple-demo/) ([repo here](https://github.com/tangrams/simple-demo)) with a basic example of a Tangram map.
 
@@ -63,7 +63,7 @@ Instead of loading traditional bitmap tiles, Tangram draws its own tiles from sc
 
 [Nextzen](https://www.nextzen.org/) provides a free [vector tile service](https://developers.nextzen.org/about.html) based on open data from [OpenStreetMap](https://openstreetmap.org/), [Natural Earth](http://www.naturalearthdata.com/), [Who's On First](https://whosonfirst.org/) and other projects,  with worldwide coverage updated continuously -- [sign up for an API key here](https://developers.nextzen.org/).
 
-Tangram currently supports [GeoJSON](http://geojson.org/) & [TopoJSON](https://github.com/mbostock/topojson)-based tiles, as well as Mapbox's [MVT](https://github.com/mapbox/vector-tile-spec) binary format.
+Tangram currently supports [GeoJSON](http://geojson.org/)-based tiles, as well as Mapbox's [MVT](https://github.com/mapbox/vector-tile-spec) binary format.
 
 ## Styling
 
