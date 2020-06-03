@@ -1,7 +1,6 @@
 import Utils from '../utils/utils';
 import * as URLs from '../utils/urls';
 
-import JSZip from 'jszip';
 import yaml from 'js-yaml';
 
 export class SceneBundle {
@@ -76,123 +75,7 @@ export class SceneBundle {
 
 }
 
-export class ZipSceneBundle extends SceneBundle {
-
-    constructor(url, path, parent) {
-        super(url, path, parent);
-        this.zip = null;
-        this.files = {};
-        this.root = null;
-        this.path = '';
-    }
-
-    isContainer() {
-        return true;
-    }
-
-    async load() {
-        this.zip = new JSZip();
-
-        if (typeof this.url === 'string') {
-            const { body } = await Utils.io(this.url, 60000, 'arraybuffer');
-            await this.zip.loadAsync(body);
-            await this.parseZipFiles();
-            return this.loadRoot();
-        } else {
-            return this;
-        }
-    }
-
-    urlFor(url) {
-        if (isGlobal(url)) {
-            return url;
-        }
-
-        if (URLs.isRelativeURL(url)) {
-            return this.urlForZipFile(URLs.flattenRelativeURL(url));
-        }
-        return super.urlFor(url);
-    }
-
-    typeFor(url) {
-        if (URLs.isRelativeURL(url)) {
-            return this.typeForZipFile(url);
-        }
-        return super.typeFor(url);
-    }
-
-    loadRoot() {
-        this.findRoot();
-        return loadResource(this.urlForZipFile(this.root));
-    }
-
-    findRoot() {
-        // There must be a single YAML file at the top level of the zip
-        const yamls = Object.keys(this.files)
-            .filter(path => this.files[path].depth === 0)
-            .filter(path => URLs.extensionForURL(path) === 'yaml');
-
-        if (yamls.length === 1) {
-            this.root = yamls[0];
-        }
-
-        // No root found
-        if (!this.root) {
-            let msg = `Could not find root scene for bundle '${this.url}': `;
-            msg += 'The zip archive\'s root level must contain a single scene file with the \'.yaml\' extension. ';
-            if (yamls.length > 0) {
-                msg += `Found multiple YAML files at the root level: ${yamls.map(r => '\'' + r + '\'' ).join(', ')}.`;
-            }
-            else {
-                msg += 'Found NO YAML files at the root level.';
-            }
-            throw Error(msg);
-        }
-    }
-
-    async parseZipFiles() {
-        let paths = [];
-        let queue = [];
-        this.zip.forEach((path, file) => {
-            if (!file.dir) {
-                paths.push(path);
-                queue.push(file.async('arraybuffer'));
-            }
-        });
-
-        const data = await Promise.all(queue);
-        for (let i = 0; i < data.length; i++) {
-            let path = paths[i];
-            let depth = path.split('/').length - 1;
-            this.files[path] = {
-                data: data[i],
-                type: URLs.extensionForURL(path),
-                depth
-            };
-        }
-    }
-
-    urlForZipFile(file) {
-        if (this.files[file]) {
-            if (!this.files[file].url) {
-                this.files[file].url = URLs.createObjectURL(new Blob([this.files[file].data]));
-            }
-
-            return this.files[file].url;
-        }
-    }
-
-    typeForZipFile(file) {
-        return this.files[file] && this.files[file].type;
-    }
-
-}
-
 export function createSceneBundle(url, path, parent, type = null) {
-    if ((type != null && type === 'zip') ||
-        (typeof url === 'string' && !URLs.isLocalURL(url) && URLs.extensionForURL(url) === 'zip')) {
-        return new ZipSceneBundle(url, path, parent);
-    }
     return new SceneBundle(url, path, parent);
 }
 
