@@ -5,7 +5,7 @@ import FontManager from './font_manager';
 import Task from '../../utils/task';
 import StyleParser from '../style_parser';
 import MultiLine from './text_wrap';
-import { splitLabelText, isTextRTL, isTextNeutral, isTextCurveBlacklisted } from './text_segments';
+import { splitLabelText, isTextRTL, isTextCjk, isTextNeutral, isTextCurveBlacklisted } from './text_segments';
 import debugSettings from '../../utils/debug_settings';
 
 export default class TextCanvas {
