@@ -45,6 +45,8 @@ const TextSettings = {
         // LineString labels can articulate while point labels cannot. Needed for future texture coordinate calculations.
         style.can_articulate = draw.can_articulate;
 
+        style.background = draw.font.background;
+
         // Use fill if specified, or default
         style.fill = draw.font.fill && StyleParser.evalCachedColorProperty(draw.font.fill, context);
 

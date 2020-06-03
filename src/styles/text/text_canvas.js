@@ -181,12 +181,12 @@ export default class TextCanvas {
     }
 
     // Draw multiple lines of text
-    drawTextMultiLine (lines, [x, y], size, { stroke, stroke_width = 0, transform, align, supersample }, type) {
+    drawTextMultiLine (lines, [x, y], size, { stroke, stroke_width = 0, transform, align, supersample, background }, type) {
         let line_height = size.line_height;
         let height = y;
         for (let line_num=0; line_num < lines.length; line_num++) {
             let line = lines[line_num];
-            this.drawTextLine(line, [x, height], size, { stroke, stroke_width, transform, align, supersample }, type);
+            this.drawTextLine(line, [x, height], size, { stroke, stroke_width, transform, align, supersample, background }, type);
             height += line_height;
         }
 
@@ -230,7 +230,7 @@ export default class TextCanvas {
     }
 
     // Draw single line of text at specified location, adjusting for buffer and baseline
-    drawTextLine (line, [x, y], size, { stroke, stroke_width = 0, transform, align, supersample }, type) {
+    drawTextLine (line, [x, y], size, { stroke, stroke_width = 0, transform, align, supersample, background }, type) {
         let dpr = Utils.device_pixel_ratio * supersample;
         align = align || 'center';
 
@@ -262,6 +262,13 @@ export default class TextCanvas {
             let shift = (type === 'curved') ? texture_size[0] : 0;
             this.context.strokeText(str, tx + shift, ty);
         }
+        if (background) {
+            this.context.save();
+            this.context.fillStyle = background.fill;
+            this.context.fillRect(tx-horizontal_buffer/1.5,ty-line_height,line.width+horizontal_buffer,line_height*1.25);
+            this.context.restore();
+        }
+
         this.context.fillText(str, tx, ty);
     }
 
@@ -429,6 +436,7 @@ export default class TextCanvas {
                             }
 
                             this.drawTextMultiLine(lines, text_info.align[align].texture_position, text_info.size, {
+                                background: text_settings.background,
                                 stroke: text_settings.stroke,
                                 stroke_width: text_settings.stroke_width,
                                 transform: text_settings.transform,
