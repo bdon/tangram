@@ -4,17 +4,12 @@ let assert = chai.assert;
 import Geo from '../src/utils/geo';
 import sampleTile from './fixtures/sample-tile.json';
 import sampleGeoJSONResponse from './fixtures/sample-json-response.json';
-import sampleTopoJSONResponse from './fixtures/sample-topojson-response.json';
 
 import DataSource from '../src/sources/data_source';
 import {
     GeoJSONTileSource,
     GeoJSONSource
 } from '../src/sources/geojson';
-import {
-    TopoJSONTileSource,
-    TopoJSONSource
-} from '../src/sources/topojson';
 import {MVTSource} from '../src/sources/mvt';
 
 import Utils from '../src/utils/utils';
@@ -26,11 +21,6 @@ function getMockTile() {
 function getMockJSONResponse() {
     return JSON.stringify(Object.assign({}, sampleGeoJSONResponse));
 }
-
-function getMockTopoResponse() {
-    return JSON.stringify(Object.assign({}, sampleTopoJSONResponse));
-}
-
 
 describe('DataSource', () => {
 
@@ -62,24 +52,10 @@ describe('DataSource', () => {
             });
         });
 
-        describe('when I ask for a TopoJSON source with a tile template URL', () => {
-            let subject = DataSource.create(Object.assign({}, {type: 'TopoJSON'}, options));
-            it('returns a new TopoJSONTileSource', () => {
-                assert.instanceOf(subject, TopoJSONTileSource);
-            });
-        });
-
         describe('when I ask for a GeoJSON source without a tile template URL', () => {
             let subject = DataSource.create(Object.assign({}, {type: 'GeoJSON'}, options, {url: 'http://localhost:8080/'}));
             it('returns a new GeoJSONSource', () => {
                 assert.instanceOf(subject, GeoJSONSource);
-            });
-        });
-
-        describe('when I ask for a TopoJSON source without a tile template URL', () => {
-            let subject = DataSource.create(Object.assign({}, {type: 'TopoJSON'}, options, {url: 'http://localhost:8080/'}));
-            it('returns a new TopoJSONSource', () => {
-                assert.instanceOf(subject, TopoJSONSource);
             });
         });
 
@@ -189,53 +165,6 @@ describe('DataSource', () => {
                 it('resolves the promise but includes an error', () => {
                     assert(mockTile.source_data.error);
                 });
-            });
-        });
-    });
-
-    describe('TopoJSONTileSource', () => {
-        let subject;
-
-        beforeEach(() => {
-            subject = new TopoJSONTileSource(options);
-        });
-
-        describe('.constructor()', () => {
-            it('returns a new instance', () => {
-                assert.instanceOf(subject, TopoJSONTileSource);
-            });
-        });
-
-        describe('.parseSourceData(dest, source, reponse)', () => {
-
-            beforeEach(() => {
-                sinon.spy(DataSource, 'projectData');
-                sinon.spy(DataSource, 'scaleData');
-            });
-
-            afterEach(() => {
-                DataSource.projectData.restore();
-                DataSource.scaleData.restore();
-            });
-
-            it('calls .projectData()', () => {
-                subject.parseSourceData(getMockTile(), {}, getMockTopoResponse());
-                sinon.assert.called(DataSource.projectData);
-            });
-
-            it('calls .scaleData()', () => {
-                subject.parseSourceData(getMockTile(), {},getMockTopoResponse());
-                sinon.assert.called(DataSource.scaleData);
-            });
-
-            it('attaches the response to the tile object', () => {
-                let tile = getMockTile();
-                let source = {};
-
-                subject.parseSourceData(tile, source, getMockTopoResponse());
-                assert.property(source, 'layers');
-                assert.isTrue(Object.keys(source.layers.buildings).length > 0);
-                assert.isTrue(Object.keys(source.layers.water).length > 0);
             });
         });
     });

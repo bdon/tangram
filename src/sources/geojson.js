@@ -246,7 +246,7 @@ export class GeoJSONTileSource extends NetworkTileSource {
 
 }
 
-// Check for URL tile pattern, if not found, treat as standalone GeoJSON/TopoJSON object
+// Check for URL tile pattern, if not found, treat as standalone GeoJSON object
 DataSource.register('GeoJSON', source => {
     return GeoJSONTileSource.urlHasTilePattern(source.url) ? GeoJSONTileSource : GeoJSONSource;
 });
