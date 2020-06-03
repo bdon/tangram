@@ -48,15 +48,6 @@ module.exports = function (config) {
                     browser: true,
                     preferBuiltins: false
                 }),
-                commonjs({
-                    // There hints are required for importing jszip
-                    // See https://rollupjs.org/guide/en#error-name-is-not-exported-by-module-
-                    namedExports: {
-                        'node_modules/process/browser.js': ['nextTick'],
-                        'node_modules/events/events.js': ['EventEmitter']
-                    }
-                }),
-
                 json({
                     exclude: ['node_modules/**', 'src/**'] // import JSON files
                 }),

@@ -3121,13 +3121,6 @@ function extensionForURL(url) {
     return url.substring(last_dot + 1);
   }
 }
-function isLocalURL(url) {
-  if (typeof url !== 'string') {
-    return;
-  }
-
-  return url.search(/^(data|blob):/) > -1;
-}
 function isRelativeURL(url) {
   if (typeof url !== 'string') {
     return;

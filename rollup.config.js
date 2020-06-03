@@ -40,13 +40,7 @@ const config = [{
         }),
         commonjs({
             // Avoids Webpack minification errors
-            ignoreGlobal: true,
-            // There hints are required for importing jszip
-            // See https://rollupjs.org/guide/en#error-name-is-not-exported-by-module-
-            namedExports: {
-                'node_modules/process/browser.js': ['nextTick'],
-                'node_modules/events/events.js': ['EventEmitter'],
-            }
+            ignoreGlobal: true
         }),
         json(), // load JSON files
         string({
