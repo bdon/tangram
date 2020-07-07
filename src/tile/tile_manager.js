@@ -74,9 +74,9 @@ export default class TileManager {
 
         if (tile != null) {
             tile.destroy();
+            this.forgetTile(tile.key);
         }
 
-        this.forgetTile(tile.key);
         this.scene.requestRedraw();
     }
 
