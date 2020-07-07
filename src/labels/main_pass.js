@@ -1,3 +1,4 @@
+import "core-js/fn/array/flat-map";
 import Label from './label';
 import LabelPoint from './label_point';
 import {LabelLineStraight} from './label_line';
