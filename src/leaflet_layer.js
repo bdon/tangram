@@ -166,6 +166,10 @@ function extendLeaflet(options) {
                         blocking: false
                     }).then(() => {
 
+                    for (const [key, value] of Object.entries(this.scene.config.sources)) {
+                        if (value.attribution) map.attributionControl.addAttribution(value.attribution)
+                    }
+
                     this._updating_tangram = true;
 
                     this.updateSize();
